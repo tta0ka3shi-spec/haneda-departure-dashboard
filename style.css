@@ -7,123 +7,87 @@
 body {
   background-color: #0d0d0d;
   color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
   height: 100vh;
+  width: 100vw;
   overflow: hidden;
   user-select: none;
 }
 
 .dashboard-container {
   display: flex;
+  flex-direction: column;
   height: 100vh;
   width: 100vw;
+  padding: 10px;
+  gap: 10px;
 }
 
-/* 左側1/3 カラム (時計) */
-.clock-section {
-  width: 33vw;
-  background-color: #121212;
-  border-right: 1px solid #2a2a2a;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
-.date-display {
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #a0a0a0;
-  margin-bottom: 24px;
-}
-
-.time-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-.time-unit {
-  font-family: "Courier New", Courier, monospace;
-  font-size: 6rem;
-  font-weight: 900;
-  line-height: 1;
-  color: #ffffff;
-}
-
-.time-unit.seconds {
-  color: #ff9500;
-}
-
-/* 右側 メインエリア */
+/* 上部 80% 出発便メインエリア */
 .main-section {
-  width: 67vw;
+  flex: 4;
   display: flex;
   flex-direction: column;
-  padding: 24px;
-  gap: 20px;
 }
 
-/* ソラリーボード */
 .solari-board-container {
   flex: 1;
-  background-color: #141414;
+  background-color: #121212;
   border-radius: 12px;
-  border: 1px solid #282828;
-  padding: 20px;
+  border: 1px solid #222222;
+  padding: 16px 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .solari-header {
   display: grid;
-  grid-template-columns: 120px 1fr 100px 90px 220px;
-  gap: 12px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #888888;
+  grid-template-columns: 140px 1fr 120px 100px 220px;
+  gap: 16px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #777777;
   padding: 0 8px;
 }
 
 .solari-rows {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
-/* 1行のグリッド配置 */
+/* フライト行 */
 .flight-row {
   display: grid;
-  grid-template-columns: 120px 1fr 100px 90px 220px;
-  gap: 12px;
+  grid-template-columns: 140px 1fr 120px 100px 220px;
+  gap: 16px;
   transition: opacity 0.5s ease;
 }
 
 .flight-row.departed {
-  opacity: 0.35; /* 出発後20分未満は半透明 */
+  opacity: 0.35;
 }
 
-/* ソラリープレート風スタイル */
+/* ソラリープレート (3Dパタパタエフェクト対応) */
 .solari-plate {
-  background-color: #1e1e1e;
-  border: 1px solid #333333;
+  background-color: #1a1a1a;
+  border: 1px solid #2d2d2d;
   border-radius: 6px;
-  height: 48px;
+  height: 42px;
   display: flex;
   align-items: center;
-  padding: 0 12px;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 1.25rem;
-  font-weight: bold;
+  padding: 0 16px;
+  font-size: 1.05rem;
+  font-weight: 700;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 -1px 2px rgba(0,0,0,0.5);
+  box-shadow: inset 0 -1px 2px rgba(0,0,0,0.4);
+  letter-spacing: 0.5px;
+  perspective: 400px;
+  transform-style: preserve-3d;
 }
 
-/* 中央割れ線 (ヒンジ) */
 .solari-plate::after {
   content: "";
   position: absolute;
@@ -131,60 +95,79 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background-color: #0a0a0a;
+  background-color: #080808;
+  z-index: 2;
 }
 
-/* JAL便名の赤色表示 */
+/* リアルなパタパタ（フリップ）アニメーション */
+@keyframes solariFlip {
+  0% {
+    transform: rotateX(0deg);
+    filter: brightness(1);
+  }
+  50% {
+    transform: rotateX(-90deg);
+    filter: brightness(0.5);
+  }
+  100% {
+    transform: rotateX(0deg);
+    filter: brightness(1);
+  }
+}
+
+.solari-plate.flipping {
+  animation: solariFlip 0.35s ease-in-out;
+}
+
+/* JAL便名ハイライト */
 .flight-row.jal .col-flight {
   color: #f87171;
 }
 
 .no-flights-message {
   text-align: center;
-  font-size: 1.5rem;
-  color: #888888;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #777777;
   margin: auto;
 }
 
-/* リマインダーエリア */
-.reminder-container {
-  height: 160px;
-  background-color: #141414;
+/* 下部 20% 時計エリア */
+.clock-section {
+  flex: 1;
+  background-color: #121212;
   border-radius: 12px;
-  border: 1px solid #282828;
-  padding: 16px 20px;
+  border: 1px solid #222222;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32px;
 }
 
-.reminder-header {
+.date-display {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #888888;
+  letter-spacing: 0.5px;
+}
+
+.time-display {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #3b82f6;
+  gap: 10px;
 }
 
-.reminder-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.time-unit {
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
 
-.reminder-list li {
-  font-size: 1.1rem;
-  color: #dddddd;
-  display: flex;
-  align-items: center;
-}
-
-.reminder-list li::before {
-  content: "•";
-  color: #3b82f6;
-  font-weight: bold;
-  display: inline-block;
-  width: 1em;
+.time-colon {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #555555;
+  margin-bottom: 6px;
 }
