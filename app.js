@@ -321,10 +321,11 @@ const MASTER_FLIGHTS = [
   { time: "20:55", number: "JL208", destJa: "名古屋(中部)", destEn: "NAGOYA(NGO)", isNorth: false }
 ];
 
+// 【修正】北方面(true)と南方面(false)のゲート番号の割り当てを逆に修正
 MASTER_FLIGHTS.forEach(f => {
   f.gate = f.isNorth 
-    ? Math.floor(Math.random() * (15 - 3 + 1)) + 3 
-    : Math.floor(Math.random() * (29 - 16 + 1)) + 16;
+    ? Math.floor(Math.random() * (29 - 16 + 1)) + 16  // 北方面: 16〜29番
+    : Math.floor(Math.random() * (15 - 3 + 1)) + 3;    // 南方面: 3〜15番
 });
 
 let isEnglish = false;
@@ -375,29 +376,37 @@ function updateBoard(forceFlip = false) {
   const now = new Date();
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-  const activeFlights = [];
-
-  for (const flight of MASTER_FLIGHTS) {
+  // 1. 全便に現在時刻からの差分(diff)を計算して付与
+  const flightsWithDiff = MASTER_FLIGHTS.map(flight => {
     const [h, m] = flight.time.split(':').map(Number);
     const flightMinutes = h * 60 + m;
-    const diff = flightMinutes - currentMinutes;
-
-    // 【変更】古い便の除外フィルターを撤廃し、現在時刻以降（または直近）のすべての便を対象にする
-    const status = getStatus(diff);
-    activeFlights.push({ ...flight, status, diff });
-  }
-
-  // 現在時刻（currentMinutes）に最も近い（または過ぎたばかりの）便を基準に並び替えるか、
-  // 単純にマスターデータの中から「現在時刻以降の便」を優先して10件取得する
-  activeFlights.sort((a, b) => {
-    // まだ出発していない便（diff >= 0）を最優先、過去の便は後ろに回す
-    const aVal = a.diff >= 0 ? a.diff : 1440 + a.diff;
-    const bVal = b.diff >= 0 ? b.diff : 1440 + b.diff;
-    return aVal - bVal;
+    let diff = flightMinutes - currentMinutes;
+    return { ...flight, flightMinutes, diff };
   });
 
+  // 2. 時刻順にマスターデータをソート
+  flightsWithDiff.sort((a, b) => a.flightMinutes - b.flightMinutes);
+
+  // 3. 現在時刻以降の最初の便（インデックス）を探す
+  let startIndex = flightsWithDiff.findIndex(f => f.flightMinutes >= currentMinutes);
+  if (startIndex === -1) startIndex = 0; // すべて終わっていれば先頭から
+
+  // 4. 必ず「未来の便」を上から順に10件取得する（足りない場合は翌日分としてマスターの最初からループして10件に満たす）
+  const activeFlights = [];
+  for (let i = 0; i < 10; i++) {
+    const targetIndex = (startIndex + i) % flightsWithDiff.length;
+    const f = flightsWithDiff[targetIndex];
+    
+    // もし一周して過去の時刻に戻る場合は、diffを24時間分（1440分）プラスして未来として扱う
+    let adjustedDiff = f.flightMinutes - currentMinutes;
+    if (adjustedDiff < 0) adjustedDiff += 1440;
+
+    const status = getStatus(adjustedDiff);
+    activeFlights.push({ ...f, diff: adjustedDiff, status });
+  }
+
   const displayLimit = 10;
-  const currentSignature = activeFlights.slice(0, displayLimit).map(f => f.number + f.time + f.status.en).join();
+  const currentSignature = activeFlights.map(f => f.number + f.time + f.status.en).join();
   const contentChanged = currentSignature !== previousFlightSignatures || forceFlip;
   previousFlightSignatures = currentSignature;
 
@@ -405,15 +414,9 @@ function updateBoard(forceFlip = false) {
   const noMsg = document.getElementById('noFlightsMessage');
   container.innerHTML = '';
 
-  const displayCount = Math.min(displayLimit, activeFlights.length);
-
-  if (displayCount === 0) {
-    noMsg.style.display = 'block';
-    return;
-  }
   noMsg.style.display = 'none';
 
-  for (let i = 0; i < displayCount; i++) {
+  for (let i = 0; i < displayLimit; i++) {
     const f = activeFlights[i];
     const isJal = f.number.startsWith('JL') || f.number.startsWith('JAL');
     const isDeparted = f.diff < 0;
