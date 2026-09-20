@@ -7,6 +7,7 @@
 body {
   background-color: #0d0d0d;
   color: #ffffff;
+  /* Appleシステム標準フォント（SF Pro / ヒラギノ） */
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
   height: 100vh;
   width: 100vw;
@@ -65,11 +66,12 @@ body {
   transition: opacity 0.5s ease;
 }
 
+/* 出発後0〜20分未満は半透明 */
 .flight-row.departed {
   opacity: 0.35;
 }
 
-/* ソラリープレート (3Dパタパタエフェクト対応) */
+/* ソラリープレート（iPad 9th向けに最適化したサイズ） */
 .solari-plate {
   background-color: #1a1a1a;
   border: 1px solid #2d2d2d;
@@ -88,6 +90,7 @@ body {
   transform-style: preserve-3d;
 }
 
+/* 中央の割れ線 */
 .solari-plate::after {
   content: "";
   position: absolute;
@@ -99,20 +102,11 @@ body {
   z-index: 2;
 }
 
-/* リアルなパタパタ（フリップ）アニメーション */
+/* パタパタ（フリップ）アニメーション */
 @keyframes solariFlip {
-  0% {
-    transform: rotateX(0deg);
-    filter: brightness(1);
-  }
-  50% {
-    transform: rotateX(-90deg);
-    filter: brightness(0.5);
-  }
-  100% {
-    transform: rotateX(0deg);
-    filter: brightness(1);
-  }
+  0% { transform: rotateX(0deg); filter: brightness(1); }
+  50% { transform: rotateX(-90deg); filter: brightness(0.5); }
+  100% { transform: rotateX(0deg); filter: brightness(1); }
 }
 
 .solari-plate.flipping {
@@ -132,7 +126,7 @@ body {
   margin: auto;
 }
 
-/* 下部 20% 時計エリア */
+/* 下部 20% 時計エリア（横並び表示） */
 .clock-section {
   flex: 1;
   background-color: #121212;
@@ -157,6 +151,7 @@ body {
   gap: 10px;
 }
 
+/* 時・分・秒ともに統一されたホワイトカラー */
 .time-unit {
   font-size: 3.2rem;
   font-weight: 700;
