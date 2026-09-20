@@ -333,12 +333,12 @@ let previousFlightSignatures = "";
 setInterval(() => {
   isEnglish = !isEnglish;
   updateHeaderLanguage();
-  updateBoard(true);
+  updateBoard(true, true); // 第2引数(isLanguageSwitch)をtrueにして呼び出す
 }, 5000);
 
 setInterval(() => {
   updateClock();
-  updateBoard(false);
+  updateBoard(false, false);
 }, 1000);
 
 function updateClock() {
@@ -372,7 +372,7 @@ function getStatus(diffMinutes) {
   return { ja: '定刻', en: 'ON TIME' };
 }
 
-function updateBoard(forceFlip = false) {
+function updateBoard(forceFlip = false, isLanguageSwitch = false) {
   const now = new Date();
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -410,6 +410,9 @@ function updateBoard(forceFlip = false) {
   container.innerHTML = '';
   noMsg.style.display = 'none';
 
+  // 言語切替時は1.2秒かけてゆっくりとめくる、通常時は0.4秒
+  const flipDuration = isLanguageSwitch ? '1.2s' : '0.4s';
+
   for (let i = 0; i < displayLimit; i++) {
     const f = activeFlights[i];
     const isJal = f.number.startsWith('JL') || f.number.startsWith('JAL');
@@ -422,14 +425,13 @@ function updateBoard(forceFlip = false) {
     const destText = isEnglish ? f.destEn : f.destJa;
     const statusText = isEnglish ? f.status.en : f.status.ja;
 
-    // ご指定の順序に完全一致：航空会社 -> 便名 -> 行先 -> 出発時刻 -> 搭乗口 -> 備考
     row.innerHTML = `
-      <div class="solari-plate col-airline ${contentChanged ? 'flipping' : ''}">${airlineText}</div>
-      <div class="solari-plate col-flight ${contentChanged ? 'flipping' : ''}">${f.number}</div>
-      <div class="solari-plate col-dest ${contentChanged ? 'flipping' : ''}">${destText}</div>
-      <div class="solari-plate col-time ${contentChanged ? 'flipping' : ''}">${f.time}</div>
-      <div class="solari-plate col-gate ${contentChanged ? 'flipping' : ''}">${f.gate}</div>
-      <div class="solari-plate col-remarks ${contentChanged ? 'flipping' : ''}">${statusText}</div>
+      <div class="solari-plate col-airline ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${airlineText}</div>
+      <div class="solari-plate col-flight ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${f.number}</div>
+      <div class="solari-plate col-dest ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${destText}</div>
+      <div class="solari-plate col-time ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${f.time}</div>
+      <div class="solari-plate col-gate ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${f.gate}</div>
+      <div class="solari-plate col-remarks ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${statusText}</div>
     `;
 
     container.appendChild(row);
