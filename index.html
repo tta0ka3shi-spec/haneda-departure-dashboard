@@ -3,35 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>羽田空港 出発案内ダッシュボード</title>
+  <title>羽田空港 出発時刻表 (Solari Board)</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="dashboard-container">
-    <!-- 上部 80%: 出発便ソラリーボード（7便表示） -->
-    <main class="main-section">
-      <section class="solari-board-container">
+    <!-- 上部メインエリア (ソラリーボード) -->
+    <section class="main-section">
+      <div class="solari-board-container">
         <div class="solari-header">
-          <span class="col-flight" id="headFlight">便名</span>
-          <span class="col-dest" id="headDest">行先</span>
-          <span class="col-time" id="headTime">時刻</span>
-          <span class="col-gate" id="headGate">搭乗口</span>
-          <span class="col-remarks" id="headRemarks">備考</span>
+          <div id="headFlight">便名</div>
+          <div id="headDest">行先</div>
+          <div id="headTime">時刻</div>
+          <div id="headGate">搭乗口</div>
+          <div id="headRemarks">備考</div>
         </div>
-
         <div class="solari-rows" id="solariRows">
-          <!-- JSで最大7便動的生成 -->
+          <!-- 動的生成 -->
         </div>
-
         <div class="no-flights-message" id="noFlightsMessage" style="display: none;">
-          本日の出発便はすべて終了しました。
+          本日の出発便はありません
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
 
-    <!-- 下部 20%: 横並びデジタル時計 -->
+    <!-- 下部 時計エリア -->
     <footer class="clock-section">
-      <div class="date-display" id="dateDisplay">----年--月--日 (-)</div>
+      <div class="date-display" id="dateDisplay">2026年--月--日 (-)</div>
       <div class="time-display">
         <span class="time-unit" id="hoursDisplay">00</span>
         <span class="time-colon">:</span>
