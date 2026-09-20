@@ -23,7 +23,7 @@ body {
   gap: 6px;
 }
 
-/* 上部メインエリア：画面の大部分をボードに割り当て */
+/* 上部メインエリア */
 .main-section {
   flex: 6.2;
   display: flex;
@@ -44,14 +44,16 @@ body {
 }
 
 /* 
-  各項目の横幅比率
+  グリッド幅の再調整：
+  行先(180px)を固定幅に収め、余った可変幅を最後の備考欄(1fr)に割り当てることで、
+  行先が広がりすぎるのを完全に防止します。
 */
 .solari-header, .flight-row {
   display: grid;
-  grid-template-columns: 130px 85px 1fr 90px 75px 200px;
+  grid-template-columns: 130px 85px 180px 90px 75px 1fr;
   gap: 6px;
   align-items: center;
-  flex: 1; /* 行自体も高さを均等に拡大 */
+  flex: 1;
   min-height: 0;
 }
 
@@ -60,7 +62,7 @@ body {
   font-weight: 700;
   color: #777777;
   padding: 0 4px;
-  flex: 0 0 24px; /* ヘッダーは固定の薄い高さにする */
+  flex: 0 0 24px;
 }
 
 .solari-rows {
@@ -68,24 +70,25 @@ body {
   flex-direction: column;
   justify-content: space-between; 
   flex: 1;
-  gap: 4px; /* 行と行の間のわずかな隙間も極限まで狭める */
+  gap: 4px;
 }
 
 .flight-row.departed {
   opacity: 0.35;
 }
 
-/* ソラリープレート：上下の縦幅を限界までいっぱいに拡大 */
+/* ソラリープレート：縦幅いっぱいに拡大 ＆ 文字サイズを極限まで拡大 */
 .solari-plate {
   background-color: #1a1a1a;
   border: 1px solid #2d2d2d;
   border-radius: 4px;
   width: 100%;
-  height: 100%; /* コンテナ内の縦幅に完全フィットして引き伸ばされる */
+  height: 100%;
   display: flex;
   align-items: center;
   padding: 0 10px;
-  font-size: 1rem; /* 縦幅拡大に合わせて文字も少し大きく視認性アップ */
+  /* 縦幅の限界に合わせた迫力のある大きなフォントサイズ */
+  font-size: 1.25rem; 
   font-weight: 700;
   position: relative;
   overflow: hidden;
@@ -93,6 +96,7 @@ body {
   letter-spacing: 0.5px;
   perspective: 600px;
   transform-style: preserve-3d;
+  white-space: nowrap;
 }
 
 /* プレート中央の割れ目 */
