@@ -382,13 +382,20 @@ function updateBoard(forceFlip = false) {
     const flightMinutes = h * 60 + m;
     const diff = flightMinutes - currentMinutes;
 
-    if (diff < -20) continue;
-
+    // 【変更】古い便の除外フィルターを撤廃し、現在時刻以降（または直近）のすべての便を対象にする
     const status = getStatus(diff);
     activeFlights.push({ ...flight, status, diff });
   }
 
-  // 最大10件に変更
+  // 現在時刻（currentMinutes）に最も近い（または過ぎたばかりの）便を基準に並び替えるか、
+  // 単純にマスターデータの中から「現在時刻以降の便」を優先して10件取得する
+  activeFlights.sort((a, b) => {
+    // まだ出発していない便（diff >= 0）を最優先、過去の便は後ろに回す
+    const aVal = a.diff >= 0 ? a.diff : 1440 + a.diff;
+    const bVal = b.diff >= 0 ? b.diff : 1440 + b.diff;
+    return aVal - bVal;
+  });
+
   const displayLimit = 10;
   const currentSignature = activeFlights.slice(0, displayLimit).map(f => f.number + f.time + f.status.en).join();
   const contentChanged = currentSignature !== previousFlightSignatures || forceFlip;
