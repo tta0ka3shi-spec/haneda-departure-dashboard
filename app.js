@@ -321,7 +321,6 @@ const MASTER_FLIGHTS = [
   { time: "20:55", number: "JL208", destJa: "名古屋(中部)", destEn: "NAGOYA(NGO)", isNorth: false }
 ];
 
-// 方角に応じたゲート番号生成 (北: 3-15 / 南: 16-29)
 MASTER_FLIGHTS.forEach(f => {
   f.gate = f.isNorth 
     ? Math.floor(Math.random() * (15 - 3 + 1)) + 3 
@@ -383,14 +382,15 @@ function updateBoard(forceFlip = false) {
     const flightMinutes = h * 60 + m;
     const diff = flightMinutes - currentMinutes;
 
-    // 出発後20分以上経過した便は完全削除
     if (diff < -20) continue;
 
     const status = getStatus(diff);
     activeFlights.push({ ...flight, status, diff });
   }
 
-  const currentSignature = activeFlights.slice(0, 7).map(f => f.number + f.time + f.status.en).join();
+  // 最大10件に変更
+  const displayLimit = 10;
+  const currentSignature = activeFlights.slice(0, displayLimit).map(f => f.number + f.time + f.status.en).join();
   const contentChanged = currentSignature !== previousFlightSignatures || forceFlip;
   previousFlightSignatures = currentSignature;
 
@@ -398,7 +398,7 @@ function updateBoard(forceFlip = false) {
   const noMsg = document.getElementById('noFlightsMessage');
   container.innerHTML = '';
 
-  const displayCount = Math.min(7, activeFlights.length);
+  const displayCount = Math.min(displayLimit, activeFlights.length);
 
   if (displayCount === 0) {
     noMsg.style.display = 'block';
