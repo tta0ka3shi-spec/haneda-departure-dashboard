@@ -19,13 +19,13 @@ body {
   flex-direction: column;
   height: 100vh;
   width: 100vw;
-  padding: 6px;
-  gap: 6px;
+  padding: 8px;
+  gap: 8px;
 }
 
-/* 上部メインエリア（10件収まるように比率調整） */
+/* 上部メインエリア：ボード部分がしっかり高さを占有するよう調整 */
 .main-section {
-  flex: 5;
+  flex: 5.5;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -34,36 +34,40 @@ body {
 .solari-board-container {
   flex: 1;
   background-color: #121212;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #222222;
-  padding: 8px 12px;
+  padding: 10px 16px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  /* 10行＋ヘッダーをコンテナ内で均等に美しく配置 */
+  justify-content: space-between; 
   min-height: 0;
 }
 
 .solari-header {
   display: grid;
   grid-template-columns: 110px 1fr 90px 70px 160px;
-  gap: 8px;
-  font-size: 0.75rem;
+  gap: 10px;
+  font-size: 0.8rem;
   font-weight: 700;
   color: #777777;
-  padding: 0 4px;
+  padding: 0 6px;
 }
 
 .solari-rows {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  /* 各行の間に適度な隙間を自動調整 */
+  justify-content: space-between; 
+  flex: 1;
+  margin-top: 4px;
 }
 
 /* フライト行 */
 .flight-row {
   display: grid;
   grid-template-columns: 110px 1fr 90px 70px 160px;
-  gap: 8px;
+  gap: 10px;
   transition: opacity 0.5s ease;
 }
 
@@ -71,16 +75,17 @@ body {
   opacity: 0.35;
 }
 
-/* ソラリープレート（10件表示のため高さを少しスリム化） */
+/* ソラリープレート：10件が上下にきれいに広がる高さに最適化 */
 .solari-plate {
   background-color: #1a1a1a;
   border: 1px solid #2d2d2d;
-  border-radius: 4px;
-  height: 28px;
+  border-radius: 5px;
+  height: 100%; /* コンテナの高さに合わせて伸縮 */
+  min-height: 30px;
   display: flex;
   align-items: center;
-  padding: 0 8px;
-  font-size: 0.85rem;
+  padding: 0 10px;
+  font-size: 0.9rem;
   font-weight: 700;
   position: relative;
   overflow: hidden;
@@ -117,28 +122,28 @@ body {
 
 .no-flights-message {
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #777777;
   margin: auto;
 }
 
-/* 下部 時計エリア（絶対に縦落ちさせないための堅牢な横並び設計） */
+/* 下部 時計エリア */
 .clock-section {
   flex: 1;
   background-color: #121212;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #222222;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 24px;
   overflow: hidden;
-  min-height: 45px;
+  min-height: 55px;
 }
 
 .date-display {
-  font-size: 1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #888888;
   letter-spacing: 0.5px;
@@ -149,12 +154,12 @@ body {
 .time-display {
   display: flex;
   align-items: center;
-  gap: 4px;
-  flex-shrink: 0; /* 時計部分は絶対に縮小・改行させない */
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .time-unit {
-  font-size: 2rem;
+  font-size: 2.3rem;
   font-weight: 700;
   color: #ffffff;
   font-variant-numeric: tabular-nums;
@@ -162,8 +167,8 @@ body {
 }
 
 .time-colon {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #555555;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
