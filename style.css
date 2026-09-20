@@ -23,7 +23,7 @@ body {
   gap: 8px;
 }
 
-/* 上部メインエリア：ボード部分がしっかり高さを占有するよう調整 */
+/* 上部メインエリア */
 .main-section {
   flex: 5.5;
   display: flex;
@@ -39,15 +39,22 @@ body {
   padding: 10px 16px;
   display: flex;
   flex-direction: column;
-  /* 10行＋ヘッダーをコンテナ内で均等に美しく配置 */
-  justify-content: space-between; 
+  justify-content: space-between;
   min-height: 0;
 }
 
-.solari-header {
+/* 
+  列の割り当て:
+  [1: 便名] [2: 航空会社] [3: 行先] [4: 時刻] [5: 搭乗口] [6: 備考(可変幅)]
+*/
+.solari-header, .flight-row {
   display: grid;
-  grid-template-columns: 110px 1fr 90px 70px 160px;
-  gap: 10px;
+  grid-template-columns: 85px 110px 1fr 85px 75px 170px;
+  gap: 8px;
+  align-items: center;
+}
+
+.solari-header {
   font-size: 0.8rem;
   font-weight: 700;
   color: #777777;
@@ -57,35 +64,26 @@ body {
 .solari-rows {
   display: flex;
   flex-direction: column;
-  /* 各行の間に適度な隙間を自動調整 */
-  justify-content: space-between; 
+  justify-content: space-between;
   flex: 1;
   margin-top: 4px;
-}
-
-/* フライト行 */
-.flight-row {
-  display: grid;
-  grid-template-columns: 110px 1fr 90px 70px 160px;
-  gap: 10px;
-  transition: opacity 0.5s ease;
 }
 
 .flight-row.departed {
   opacity: 0.35;
 }
 
-/* ソラリープレート：10件が上下にきれいに広がる高さに最適化 */
+/* ソラリープレート共通設定 */
 .solari-plate {
   background-color: #1a1a1a;
   border: 1px solid #2d2d2d;
   border-radius: 5px;
-  height: 100%; /* コンテナの高さに合わせて伸縮 */
+  height: 100%;
   min-height: 30px;
   display: flex;
   align-items: center;
   padding: 0 10px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 700;
   position: relative;
   overflow: hidden;
@@ -95,6 +93,7 @@ body {
   transform-style: preserve-3d;
 }
 
+/* 中央の割れ線 */
 .solari-plate::after {
   content: "";
   position: absolute;
@@ -116,7 +115,9 @@ body {
   animation: solariFlip 0.35s ease-in-out;
 }
 
-.flight-row.jal .col-flight {
+/* JAL便名・航空会社のハイライトカラー */
+.flight-row.jal .col-flight,
+.flight-row.jal .col-airline {
   color: #f87171;
 }
 
