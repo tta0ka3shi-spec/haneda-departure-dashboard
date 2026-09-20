@@ -44,17 +44,12 @@ body {
 }
 
 /* 
-  ご指定の並び順に合わせたグリッド列定義：
-  1. 航空会社 (110px)
-  2. 便名 (85px)
-  3. 行先 (1fr - 可変)
-  4. 出発時刻 (85px)
-  5. 搭乗口 (75px)
-  6. 備考 (170px - 余白調整)
+  ご指定の並び順（航空会社、便名、行先、出発時刻、搭乗口、備考）
+  行先が広がりすぎないよう固定〜適正幅にし、最後の「備考(1fr)」で残りの幅をすべて調整します。
 */
 .solari-header, .flight-row {
   display: grid;
-  grid-template-columns: 110px 85px 1fr 85px 75px 170px;
+  grid-template-columns: 120px 90px 180px 90px 80px 1fr;
   gap: 8px;
   align-items: center;
 }
