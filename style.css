@@ -23,9 +23,9 @@ body {
   gap: 8px;
 }
 
-/* 上部メインエリア */
+/* 上部メインエリア：ボード部分に最大の高さを割り当て */
 .main-section {
-  flex: 5.5;
+  flex: 5.8;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -36,7 +36,7 @@ body {
   background-color: #121212;
   border-radius: 10px;
   border: 1px solid #222222;
-  padding: 10px 16px;
+  padding: 8px 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -45,7 +45,6 @@ body {
 
 /* 
   ご指定の並び順（航空会社、便名、行先、出発時刻、搭乗口、備考）
-  行先が広がりすぎないよう固定〜適正幅にし、最後の「備考(1fr)」で残りの幅をすべて調整します。
 */
 .solari-header, .flight-row {
   display: grid;
@@ -55,35 +54,34 @@ body {
 }
 
 .solari-header {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #777777;
-  padding: 0 6px;
+  padding: 0 4px;
 }
 
 .solari-rows {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* 10行のボードを隙間なく上下いっぱいに均等配置 */
+  justify-content: space-between; 
   flex: 1;
-  margin-top: 4px;
 }
 
 .flight-row.departed {
   opacity: 0.35;
 }
 
-/* ソラリープレート共通設定 */
+/* ソラリープレート：上下の隙間をなくし、高さ方向いっぱいに拡大 */
 .solari-plate {
   background-color: #1a1a1a;
   border: 1px solid #2d2d2d;
-  border-radius: 5px;
-  height: 100%;
-  min-height: 30px;
+  border-radius: 4px;
+  height: 100%; /* コンテナ内の縦幅に完全フィット */
   display: flex;
   align-items: center;
   padding: 0 10px;
-  font-size: 0.85rem;
+  font-size: 0.95rem; /* プレートの拡大に合わせて文字も少し大きく調整 */
   font-weight: 700;
   position: relative;
   overflow: hidden;
@@ -140,7 +138,7 @@ body {
   align-items: center;
   padding: 0 24px;
   overflow: hidden;
-  min-height: 55px;
+  min-height: 52px;
 }
 
 .date-display {
