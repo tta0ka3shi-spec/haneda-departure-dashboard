@@ -43,14 +43,9 @@ body {
   min-height: 0;
 }
 
-/* 
-  グリッド幅の再調整：
-  行先(180px)を固定幅に収め、余った可変幅を最後の備考欄(1fr)に割り当てることで、
-  行先が広がりすぎるのを完全に防止します。
-*/
 .solari-header, .flight-row {
   display: grid;
-  grid-template-columns: 130px 85px 180px 90px 75px 1fr;
+  grid-template-columns: 140px 85px 180px 90px 75px 1fr;
   gap: 6px;
   align-items: center;
   flex: 1;
@@ -86,8 +81,7 @@ body {
   height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 10px;
-  /* 縦幅の限界に合わせた迫力のある大きなフォントサイズ */
+  padding: 0 8px;
   font-size: 1.25rem; 
   font-weight: 700;
   position: relative;
@@ -97,6 +91,15 @@ body {
   perspective: 600px;
   transform-style: preserve-3d;
   white-space: nowrap;
+}
+
+/* 航空会社欄のロゴ画像設定 */
+.solari-plate img.airline-logo {
+  max-height: 75%;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  margin: auto;
 }
 
 /* プレート中央の割れ目 */
@@ -142,9 +145,7 @@ body {
   transform-origin: center center;
 }
 
-/* JALハイライトカラー */
-.flight-row.jal .col-flight,
-.flight-row.jal .col-airline {
+.flight-row.jal .col-flight {
   color: #f87171;
 }
 
