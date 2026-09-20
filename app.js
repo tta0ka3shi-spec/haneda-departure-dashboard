@@ -1,4 +1,4 @@
-// 羽田空港 出発時刻表 全路線完全マスターデータ (全319便 完全網羅)
+// 羽田空港 出発時刻表 全路線完全マスターデータ (全319便)
 const MASTER_FLIGHTS = [
   { time: "00:05", number: "JL35", destJa: "シンガポール", destEn: "SINGAPORE", isNorth: false },
   { time: "00:15", number: "JL41", destJa: "ロンドン(ヒースロー)", destEn: "LONDON(LHR)", isNorth: true },
