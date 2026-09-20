@@ -8,19 +8,8 @@
 </head>
 <body>
   <div class="dashboard-container">
-    <!-- 左側1/3: 大型縦型デジタル時計 -->
-    <aside class="clock-section">
-      <div class="date-display" id="dateDisplay">----年--月--日 (-)</div>
-      <div class="time-display">
-        <span class="time-unit" id="hoursDisplay">00</span>
-        <span class="time-unit" id="minutesDisplay">00</span>
-        <span class="time-unit seconds" id="secondsDisplay">00</span>
-      </div>
-    </aside>
-
-    <!-- 右側: ソラリーボード ＆ リマインダー -->
+    <!-- 上部 80%: 出発便ソラリーボード（7便表示） -->
     <main class="main-section">
-      <!-- 上部: 出発便案内ソラリーボード -->
       <section class="solari-board-container">
         <div class="solari-header">
           <span class="col-flight" id="headFlight">便名</span>
@@ -31,27 +20,26 @@
         </div>
 
         <div class="solari-rows" id="solariRows">
-          <!-- JSで最大6便動的生成 -->
+          <!-- JSで最大7便動的生成 -->
         </div>
 
         <div class="no-flights-message" id="noFlightsMessage" style="display: none;">
           本日の出発便はすべて終了しました。
         </div>
       </section>
-
-      <!-- 下部: コンパクトリマインダー -->
-      <section class="reminder-container">
-        <div class="reminder-header">
-          <span class="reminder-icon">☑</span>
-          <span class="reminder-title" id="reminderTitle">リマインダー</span>
-        </div>
-        <ul class="reminder-list" id="reminderList">
-          <li>パスポート・搭乗券の最終確認</li>
-          <li>保安検査場を出発20分前に通過</li>
-          <li>iPadの充電ケーブルとモバイルバッテリー持参</li>
-        </ul>
-      </section>
     </main>
+
+    <!-- 下部 20%: 横並びデジタル時計 -->
+    <footer class="clock-section">
+      <div class="date-display" id="dateDisplay">----年--月--日 (-)</div>
+      <div class="time-display">
+        <span class="time-unit" id="hoursDisplay">00</span>
+        <span class="time-colon">:</span>
+        <span class="time-unit" id="minutesDisplay">00</span>
+        <span class="time-colon">:</span>
+        <span class="time-unit" id="secondsDisplay">00</span>
+      </div>
+    </footer>
   </div>
 
   <script src="app.js"></script>
