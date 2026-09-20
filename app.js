@@ -421,12 +421,16 @@ function updateBoard(forceFlip = false, isLanguageSwitch = false) {
     const row = document.createElement('div');
     row.className = `flight-row ${isJal ? 'jal' : ''} ${isDeparted ? 'departed' : ''}`;
 
-    const airlineText = isJal ? (isEnglish ? 'JAPAN AIRLINES' : '日本航空') : (isEnglish ? 'JAL' : 'JAL');
+    // JAL便の場合はロゴ画像を表示し、それ以外はテキストを表示
+    const airlineContent = isJal 
+      ? `<img src="jal-logo.png" alt="JAPAN AIRLINES" class="airline-logo">` 
+      : 'JAL';
+
     const destText = isEnglish ? f.destEn : f.destJa;
     const statusText = isEnglish ? f.status.en : f.status.ja;
 
     row.innerHTML = `
-      <div class="solari-plate col-airline ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${airlineText}</div>
+      <div class="solari-plate col-airline ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${airlineContent}</div>
       <div class="solari-plate col-flight ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${f.number}</div>
       <div class="solari-plate col-dest ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${destText}</div>
       <div class="solari-plate col-time ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${f.time}</div>
