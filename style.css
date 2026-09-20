@@ -45,12 +45,12 @@ body {
 
 /* 
   グリッド幅の再調整：
-  行先(180px)を固定幅に収め、余った可変幅を最後の備考欄(1fr)に割り当てることで、
-  行先が広がりすぎるのを完全に防止します。
+  便名が隠れないよう、便名の幅を 85px → 110px に拡大しました。
+  左から：航空会社(120px) | 便名(110px) | 行先(180px) | 出発時刻(90px) | 搭乗口(75px) | 備考(1fr)
 */
 .solari-header, .flight-row {
   display: grid;
-  grid-template-columns: 130px 85px 180px 90px 75px 1fr;
+  grid-template-columns: 120px 110px 180px 90px 75px 1fr;
   gap: 6px;
   align-items: center;
   flex: 1;
@@ -77,7 +77,7 @@ body {
   opacity: 0.35;
 }
 
-/* ソラリープレート：縦幅いっぱいに拡大 ＆ 文字サイズを極限まで拡大 */
+/* ソラリープレート：縦幅いっぱいに拡大 ＆ 文字サイズ最適化 */
 .solari-plate {
   background-color: #1a1a1a;
   border: 1px solid #2d2d2d;
@@ -86,8 +86,7 @@ body {
   height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 10px;
-  /* 縦幅の限界に合わせた迫力のある大きなフォントサイズ */
+  padding: 0 8px;
   font-size: 1.25rem; 
   font-weight: 700;
   position: relative;
