@@ -44,12 +44,17 @@ body {
 }
 
 /* 
-  列の割り当て:
-  [1: 便名] [2: 航空会社] [3: 行先] [4: 時刻] [5: 搭乗口] [6: 備考(可変幅)]
+  ご指定の並び順に合わせたグリッド列定義：
+  1. 航空会社 (110px)
+  2. 便名 (85px)
+  3. 行先 (1fr - 可変)
+  4. 出発時刻 (85px)
+  5. 搭乗口 (75px)
+  6. 備考 (170px - 余白調整)
 */
 .solari-header, .flight-row {
   display: grid;
-  grid-template-columns: 85px 110px 1fr 85px 75px 170px;
+  grid-template-columns: 110px 85px 1fr 85px 75px 170px;
   gap: 8px;
   align-items: center;
 }
