@@ -43,15 +43,6 @@ body {
   min-height: 0;
 }
 
-/* 
-  各列の幅を十分に拡充し、大きな文字でも確実にはみ出さない設計：
-  1. 航空会社: 210px (JAPAN AIRLINESが余裕で収まる幅)
-  2. 便名: 110px
-  3. 行先: 280px (LONDON(LHR)等がしっかり収まる幅)
-  4. 出発時刻: 100px
-  5. 搭乗口: 85px
-  6. 備考: 1fr (残りすべてを吸収)
-*/
 .solari-header, .flight-row {
   display: grid;
   grid-template-columns: 210px 110px 280px 100px 85px 1fr;
@@ -81,7 +72,7 @@ body {
   opacity: 0.35;
 }
 
-/* ソラリープレート設定 */
+/* ソラリープレート共通設定（通常項目の大きな文字サイズ） */
 .solari-plate {
   background-color: #1a1a1a;
   border: 1px solid #2d2d2d;
@@ -90,7 +81,7 @@ body {
   height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 8px; /* 左右の余白を少し詰めて文字が収まりやすくする */
+  padding: 0 8px;
   font-size: 1.15rem; 
   font-weight: 700;
   position: relative;
@@ -100,6 +91,16 @@ body {
   perspective: 600px;
   transform-style: preserve-3d;
   white-space: nowrap;
+}
+
+/* 航空会社欄（.col-airline）専用のスタイル：
+   長文のときに折り返しを許可し、他より少し小さい文字サイズ＆上下中央揃えにする */
+.solari-plate.col-airline {
+  white-space: normal;
+  line-height: 1.15;
+  font-size: 0.82rem; 
+  text-align: center;
+  justify-content: center;
 }
 
 /* プレート中央の割れ目 */
