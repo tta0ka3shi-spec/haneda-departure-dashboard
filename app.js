@@ -321,7 +321,6 @@ const MASTER_FLIGHTS = [
   { time: "20:55", number: "JL208", destJa: "名古屋(中部)", destEn: "NAGOYA(NGO)", isNorth: false }
 ];
 
-// 【修正】北方面(true)と南方面(false)のゲート番号の割り当てを逆に修正
 MASTER_FLIGHTS.forEach(f => {
   f.gate = f.isNorth 
     ? Math.floor(Math.random() * (29 - 16 + 1)) + 16  // 北方面: 16〜29番
@@ -358,6 +357,7 @@ function updateClock() {
 
 function updateHeaderLanguage() {
   document.getElementById('headFlight').textContent = isEnglish ? 'FLIGHT' : '便名';
+  document.getElementById('headAirline').textContent = isEnglish ? 'AIRLINE' : '航空会社';
   document.getElementById('headDest').textContent = isEnglish ? 'DESTINATION' : '行先';
   document.getElementById('headTime').textContent = isEnglish ? 'TIME' : '時刻';
   document.getElementById('headGate').textContent = isEnglish ? 'GATE' : '搭乗口';
@@ -376,7 +376,6 @@ function updateBoard(forceFlip = false) {
   const now = new Date();
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-  // 1. 全便に現在時刻からの差分(diff)を計算して付与
   const flightsWithDiff = MASTER_FLIGHTS.map(flight => {
     const [h, m] = flight.time.split(':').map(Number);
     const flightMinutes = h * 60 + m;
@@ -384,20 +383,16 @@ function updateBoard(forceFlip = false) {
     return { ...flight, flightMinutes, diff };
   });
 
-  // 2. 時刻順にマスターデータをソート
   flightsWithDiff.sort((a, b) => a.flightMinutes - b.flightMinutes);
 
-  // 3. 現在時刻以降の最初の便（インデックス）を探す
   let startIndex = flightsWithDiff.findIndex(f => f.flightMinutes >= currentMinutes);
-  if (startIndex === -1) startIndex = 0; // すべて終わっていれば先頭から
+  if (startIndex === -1) startIndex = 0;
 
-  // 4. 必ず「未来の便」を上から順に10件取得する（足りない場合は翌日分としてマスターの最初からループして10件に満たす）
   const activeFlights = [];
   for (let i = 0; i < 10; i++) {
     const targetIndex = (startIndex + i) % flightsWithDiff.length;
     const f = flightsWithDiff[targetIndex];
     
-    // もし一周して過去の時刻に戻る場合は、diffを24時間分（1440分）プラスして未来として扱う
     let adjustedDiff = f.flightMinutes - currentMinutes;
     if (adjustedDiff < 0) adjustedDiff += 1440;
 
@@ -413,7 +408,6 @@ function updateBoard(forceFlip = false) {
   const container = document.getElementById('solariRows');
   const noMsg = document.getElementById('noFlightsMessage');
   container.innerHTML = '';
-
   noMsg.style.display = 'none';
 
   for (let i = 0; i < displayLimit; i++) {
@@ -424,11 +418,13 @@ function updateBoard(forceFlip = false) {
     const row = document.createElement('div');
     row.className = `flight-row ${isJal ? 'jal' : ''} ${isDeparted ? 'departed' : ''}`;
 
+    const airlineText = isJal ? (isEnglish ? 'JAPAN AIRLINES' : '日本航空') : (isEnglish ? 'JAL' : 'JAL');
     const destText = isEnglish ? f.destEn : f.destJa;
     const statusText = isEnglish ? f.status.en : f.status.ja;
 
     row.innerHTML = `
       <div class="solari-plate col-flight ${contentChanged ? 'flipping' : ''}">${f.number}</div>
+      <div class="solari-plate col-airline ${contentChanged ? 'flipping' : ''}">${airlineText}</div>
       <div class="solari-plate col-dest ${contentChanged ? 'flipping' : ''}">${destText}</div>
       <div class="solari-plate col-time ${contentChanged ? 'flipping' : ''}">${f.time}</div>
       <div class="solari-plate col-gate ${contentChanged ? 'flipping' : ''}">${f.gate}</div>
