@@ -44,17 +44,17 @@ body {
 }
 
 /* 
-  各列の幅を、最長文字（JAPAN AIRLINESやロンドン等の英語名）がしっかり収まるよう再設計：
-  1. 航空会社: 175px (JAPAN AIRLINESが収まる幅)
-  2. 便名: 100px (JL2500等が収まる幅)
-  3. 行先: 240px (LONDON(LHR)等の長い英語都市名が収まる幅)
-  4. 出発時刻: 95px (00:00が収まる幅)
-  5. 搭乗口: 80px (ゲート番号が収まる幅)
+  各列の幅を十分に拡充し、大きな文字でも確実にはみ出さない設計：
+  1. 航空会社: 210px (JAPAN AIRLINESが余裕で収まる幅)
+  2. 便名: 110px
+  3. 行先: 280px (LONDON(LHR)等がしっかり収まる幅)
+  4. 出発時刻: 100px
+  5. 搭乗口: 85px
   6. 備考: 1fr (残りすべてを吸収)
 */
 .solari-header, .flight-row {
   display: grid;
-  grid-template-columns: 175px 100px 240px 95px 80px 1fr;
+  grid-template-columns: 210px 110px 280px 100px 85px 1fr;
   gap: 6px;
   align-items: center;
   flex: 1;
@@ -90,13 +90,13 @@ body {
   height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 10px;
-  font-size: 1.15rem; /* 大きさを維持しつつ、各幅に収まるよう調整 */
+  padding: 0 8px; /* 左右の余白を少し詰めて文字が収まりやすくする */
+  font-size: 1.15rem; 
   font-weight: 700;
   position: relative;
   overflow: hidden;
   box-shadow: inset 0 1px 2px rgba(255,255,255,0.05), inset 0 -2px 3px rgba(0,0,0,0.6);
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   perspective: 600px;
   transform-style: preserve-3d;
   white-space: nowrap;
