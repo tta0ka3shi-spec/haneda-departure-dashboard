@@ -356,10 +356,10 @@ function updateClock() {
 }
 
 function updateHeaderLanguage() {
-  document.getElementById('headFlight').textContent = isEnglish ? 'FLIGHT' : '便名';
   document.getElementById('headAirline').textContent = isEnglish ? 'AIRLINE' : '航空会社';
+  document.getElementById('headFlight').textContent = isEnglish ? 'FLIGHT' : '便名';
   document.getElementById('headDest').textContent = isEnglish ? 'DESTINATION' : '行先';
-  document.getElementById('headTime').textContent = isEnglish ? 'TIME' : '時刻';
+  document.getElementById('headTime').textContent = isEnglish ? 'TIME' : '出発時刻';
   document.getElementById('headGate').textContent = isEnglish ? 'GATE' : '搭乗口';
   document.getElementById('headRemarks').textContent = isEnglish ? 'REMARKS' : '備考';
 }
@@ -422,9 +422,10 @@ function updateBoard(forceFlip = false) {
     const destText = isEnglish ? f.destEn : f.destJa;
     const statusText = isEnglish ? f.status.en : f.status.ja;
 
+    // ご指定の順序に完全一致：航空会社 -> 便名 -> 行先 -> 出発時刻 -> 搭乗口 -> 備考
     row.innerHTML = `
-      <div class="solari-plate col-flight ${contentChanged ? 'flipping' : ''}">${f.number}</div>
       <div class="solari-plate col-airline ${contentChanged ? 'flipping' : ''}">${airlineText}</div>
+      <div class="solari-plate col-flight ${contentChanged ? 'flipping' : ''}">${f.number}</div>
       <div class="solari-plate col-dest ${contentChanged ? 'flipping' : ''}">${destText}</div>
       <div class="solari-plate col-time ${contentChanged ? 'flipping' : ''}">${f.time}</div>
       <div class="solari-plate col-gate ${contentChanged ? 'flipping' : ''}">${f.gate}</div>
