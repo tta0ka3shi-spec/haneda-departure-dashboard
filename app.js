@@ -330,11 +330,12 @@ MASTER_FLIGHTS.forEach(f => {
 let isEnglish = false;
 let previousFlightSignatures = "";
 
+// 8秒ごとに言語切替 (8000ミリ秒)
 setInterval(() => {
   isEnglish = !isEnglish;
   updateHeaderLanguage();
-  updateBoard(true, true); // 第2引数(isLanguageSwitch)をtrueにして呼び出す
-}, 5000);
+  updateBoard(true, true);
+}, 8000);
 
 setInterval(() => {
   updateClock();
@@ -410,7 +411,6 @@ function updateBoard(forceFlip = false, isLanguageSwitch = false) {
   container.innerHTML = '';
   noMsg.style.display = 'none';
 
-  // 言語切替時は1.2秒かけてゆっくりとめくる、通常時は0.4秒
   const flipDuration = isLanguageSwitch ? '1.2s' : '0.4s';
 
   for (let i = 0; i < displayLimit; i++) {
