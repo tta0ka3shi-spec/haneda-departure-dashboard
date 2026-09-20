@@ -29,6 +29,7 @@ body {
   flex: 4;
   display: flex;
   flex-direction: column;
+  min-height: 0; /* flexアイテムの縮小を許可 */
 }
 
 .solari-board-container {
@@ -36,17 +37,18 @@ body {
   background-color: #121212;
   border-radius: 12px;
   border: 1px solid #222222;
-  padding: 16px 24px;
+  padding: 12px 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  min-height: 0;
 }
 
 .solari-header {
   display: grid;
-  grid-template-columns: 140px 1fr 120px 100px 220px;
-  gap: 16px;
-  font-size: 0.9rem;
+  grid-template-columns: 130px 1fr 110px 90px 200px;
+  gap: 12px;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #777777;
   padding: 0 8px;
@@ -55,14 +57,14 @@ body {
 .solari-rows {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 /* フライト行 */
 .flight-row {
   display: grid;
-  grid-template-columns: 140px 1fr 120px 100px 220px;
-  gap: 16px;
+  grid-template-columns: 130px 1fr 110px 90px 200px;
+  gap: 12px;
   transition: opacity 0.5s ease;
 }
 
@@ -71,16 +73,16 @@ body {
   opacity: 0.35;
 }
 
-/* ソラリープレート（iPad 9th向けに最適化したサイズ） */
+/* ソラリープレート（iPad向け最適化） */
 .solari-plate {
   background-color: #1a1a1a;
   border: 1px solid #2d2d2d;
   border-radius: 6px;
-  height: 42px;
+  height: 38px;
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  font-size: 1.05rem;
+  padding: 0 12px;
+  font-size: 0.95rem;
   font-weight: 700;
   position: relative;
   overflow: hidden;
@@ -120,13 +122,13 @@ body {
 
 .no-flights-message {
   text-align: center;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #777777;
   margin: auto;
 }
 
-/* 下部 20% 時計エリア（横並び表示） */
+/* 下部 20% 時計エリア（iPadで絶対に縦落ちしない横並び設計） */
 .clock-section {
   flex: 1;
   background-color: #121212;
@@ -135,25 +137,28 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 32px;
+  padding: 0 24px;
+  overflow: hidden;
 }
 
 .date-display {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #888888;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .time-display {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
-/* 時・分・秒ともに統一されたホワイトカラー */
+/* iPadの画面幅に収まるようサイズを微調整し、完全に横並びを維持 */
 .time-unit {
-  font-size: 3.2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #ffffff;
   font-variant-numeric: tabular-nums;
@@ -161,8 +166,8 @@ body {
 }
 
 .time-colon {
-  font-size: 2.8rem;
+  font-size: 2.2rem;
   font-weight: 700;
   color: #555555;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
