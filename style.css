@@ -7,7 +7,6 @@
 body {
   background-color: #0d0d0d;
   color: #ffffff;
-  /* Appleシステム標準フォント（SF Pro / ヒラギノ） */
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
   height: 100vh;
   width: 100vw;
@@ -20,79 +19,77 @@ body {
   flex-direction: column;
   height: 100vh;
   width: 100vw;
-  padding: 10px;
-  gap: 10px;
+  padding: 6px;
+  gap: 6px;
 }
 
-/* 上部 80% 出発便メインエリア */
+/* 上部メインエリア（10件収まるように比率調整） */
 .main-section {
-  flex: 4;
+  flex: 5;
   display: flex;
   flex-direction: column;
-  min-height: 0; /* flexアイテムの縮小を許可 */
+  min-height: 0;
 }
 
 .solari-board-container {
   flex: 1;
   background-color: #121212;
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid #222222;
-  padding: 12px 20px;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   min-height: 0;
 }
 
 .solari-header {
   display: grid;
-  grid-template-columns: 130px 1fr 110px 90px 200px;
-  gap: 12px;
-  font-size: 0.85rem;
+  grid-template-columns: 110px 1fr 90px 70px 160px;
+  gap: 8px;
+  font-size: 0.75rem;
   font-weight: 700;
   color: #777777;
-  padding: 0 8px;
+  padding: 0 4px;
 }
 
 .solari-rows {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
 }
 
 /* フライト行 */
 .flight-row {
   display: grid;
-  grid-template-columns: 130px 1fr 110px 90px 200px;
-  gap: 12px;
+  grid-template-columns: 110px 1fr 90px 70px 160px;
+  gap: 8px;
   transition: opacity 0.5s ease;
 }
 
-/* 出発後0〜20分未満は半透明 */
 .flight-row.departed {
   opacity: 0.35;
 }
 
-/* ソラリープレート（iPad向け最適化） */
+/* ソラリープレート（10件表示のため高さを少しスリム化） */
 .solari-plate {
   background-color: #1a1a1a;
   border: 1px solid #2d2d2d;
-  border-radius: 6px;
-  height: 38px;
+  border-radius: 4px;
+  height: 28px;
   display: flex;
   align-items: center;
-  padding: 0 12px;
-  font-size: 0.95rem;
+  padding: 0 8px;
+  font-size: 0.85rem;
   font-weight: 700;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 -1px 2px rgba(0,0,0,0.4);
+  box-shadow: inset 0 -1px 1px rgba(0,0,0,0.4);
   letter-spacing: 0.5px;
   perspective: 400px;
   transform-style: preserve-3d;
 }
 
-/* 中央の割れ線 */
 .solari-plate::after {
   content: "";
   position: absolute;
@@ -104,7 +101,6 @@ body {
   z-index: 2;
 }
 
-/* パタパタ（フリップ）アニメーション */
 @keyframes solariFlip {
   0% { transform: rotateX(0deg); filter: brightness(1); }
   50% { transform: rotateX(-90deg); filter: brightness(0.5); }
@@ -115,50 +111,50 @@ body {
   animation: solariFlip 0.35s ease-in-out;
 }
 
-/* JAL便名ハイライト */
 .flight-row.jal .col-flight {
   color: #f87171;
 }
 
 .no-flights-message {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #777777;
   margin: auto;
 }
 
-/* 下部 20% 時計エリア（iPadで絶対に縦落ちしない横並び設計） */
+/* 下部 時計エリア（絶対に縦落ちさせないための堅牢な横並び設計） */
 .clock-section {
   flex: 1;
   background-color: #121212;
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid #222222;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 24px;
+  padding: 0 16px;
   overflow: hidden;
+  min-height: 45px;
 }
 
 .date-display {
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #888888;
   letter-spacing: 0.5px;
   white-space: nowrap;
+  flex-shrink: 1;
 }
 
 .time-display {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+  gap: 4px;
+  flex-shrink: 0; /* 時計部分は絶対に縮小・改行させない */
 }
 
-/* iPadの画面幅に収まるようサイズを微調整し、完全に横並びを維持 */
 .time-unit {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #ffffff;
   font-variant-numeric: tabular-nums;
@@ -166,8 +162,8 @@ body {
 }
 
 .time-colon {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #555555;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
