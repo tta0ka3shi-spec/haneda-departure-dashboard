@@ -23,7 +23,7 @@ body {
   gap: 8px;
 }
 
-/* 上部メインエリア：ボード部分に最大の高さを割り当て */
+/* 上部メインエリア */
 .main-section {
   flex: 5.8;
   display: flex;
@@ -43,9 +43,6 @@ body {
   min-height: 0;
 }
 
-/* 
-  ご指定の並び順（航空会社、便名、行先、出発時刻、搭乗口、備考）
-*/
 .solari-header, .flight-row {
   display: grid;
   grid-template-columns: 120px 90px 180px 90px 80px 1fr;
@@ -63,7 +60,6 @@ body {
 .solari-rows {
   display: flex;
   flex-direction: column;
-  /* 10行のボードを隙間なく上下いっぱいに均等配置 */
   justify-content: space-between; 
   flex: 1;
 }
@@ -72,45 +68,67 @@ body {
   opacity: 0.35;
 }
 
-/* ソラリープレート：上下の隙間をなくし、高さ方向いっぱいに拡大 */
+/* ソラリープレート：リアルな3Dパタパタの舞台設定 */
 .solari-plate {
   background-color: #1a1a1a;
   border: 1px solid #2d2d2d;
   border-radius: 4px;
-  height: 100%; /* コンテナ内の縦幅に完全フィット */
+  height: 100%;
   display: flex;
   align-items: center;
   padding: 0 10px;
-  font-size: 0.95rem; /* プレートの拡大に合わせて文字も少し大きく調整 */
+  font-size: 0.95rem;
   font-weight: 700;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 -1px 1px rgba(0,0,0,0.4);
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.05), inset 0 -2px 3px rgba(0,0,0,0.6);
   letter-spacing: 0.5px;
-  perspective: 400px;
+  perspective: 600px; /* 立体感を出すための視点深度 */
   transform-style: preserve-3d;
 }
 
-/* 中央の割れ線 */
+/* プレート中央の割れ目（物理的な溝の影） */
 .solari-plate::after {
   content: "";
   position: absolute;
   top: 50%;
   left: 0;
   right: 0;
-  height: 1px;
-  background-color: #080808;
+  height: 2px;
+  background-color: #050505;
+  box-shadow: 0 1px 1px rgba(255,255,255,0.08);
   z-index: 2;
 }
 
-@keyframes solariFlip {
-  0% { transform: rotateX(0deg); filter: brightness(1); }
-  50% { transform: rotateX(-90deg); filter: brightness(0.5); }
-  100% { transform: rotateX(0deg); filter: brightness(1); }
+/* 本物のパタパタがめくれるようなリッチな3D回転アニメーション */
+@keyframes realSolariFlip {
+  0% {
+    transform: rotateX(0deg);
+    filter: brightness(1);
+    box-shadow: inset 0 -2px 3px rgba(0,0,0,0.6);
+  }
+  30% {
+    transform: rotateX(-45deg);
+    filter: brightness(0.4); /* めくれて影になる瞬間暗くする */
+  }
+  50% {
+    transform: rotateX(-90deg); /* ちょうど真上を向いて見えなくなる瞬間 */
+    filter: brightness(0.2);
+  }
+  70% {
+    transform: rotateX(-45deg);
+    filter: brightness(0.7);
+  }
+  100% {
+    transform: rotateX(0deg);
+    filter: brightness(1);
+    box-shadow: inset 0 -2px 3px rgba(0,0,0,0.6);
+  }
 }
 
 .solari-plate.flipping {
-  animation: solariFlip 0.35s ease-in-out;
+  animation: realSolariFlip 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center center;
 }
 
 /* JAL便名・航空会社のハイライトカラー */
