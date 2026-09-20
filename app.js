@@ -1,4 +1,4 @@
-// 羽田空港 出発時刻表 全路線完全統合マスターデータ (全319便)
+// 羽田空港 出発時刻表 全路線完全マスターデータ (全319便 完全網羅)
 const MASTER_FLIGHTS = [
   { time: "00:05", number: "JL35", destJa: "シンガポール", destEn: "SINGAPORE", isNorth: false },
   { time: "00:15", number: "JL41", destJa: "ロンドン(ヒースロー)", destEn: "LONDON(LHR)", isNorth: true },
@@ -321,7 +321,7 @@ const MASTER_FLIGHTS = [
   { time: "20:55", number: "JL208", destJa: "名古屋(中部)", destEn: "NAGOYA(NGO)", isNorth: false }
 ];
 
-// 方角に応じたゲート番号固定ランダム生成 (北方面: 3-15 / 南方面: 16-29)
+// 方角に応じたゲート番号生成 (北: 3-15 / 南: 16-29)
 MASTER_FLIGHTS.forEach(f => {
   f.gate = f.isNorth 
     ? Math.floor(Math.random() * (15 - 3 + 1)) + 3 
@@ -329,18 +329,17 @@ MASTER_FLIGHTS.forEach(f => {
 });
 
 let isEnglish = false;
+let previousFlightSignatures = "";
 
-// 5秒ごとに日/英のパタパタ表示切り替え
 setInterval(() => {
   isEnglish = !isEnglish;
   updateHeaderLanguage();
-  updateBoard();
+  updateBoard(true);
 }, 5000);
 
-// 1秒ごとのリアルタイム更新 (時計 ＆ 出発便進行)
 setInterval(() => {
   updateClock();
-  updateBoard();
+  updateBoard(false);
 }, 1000);
 
 function updateClock() {
@@ -363,18 +362,17 @@ function updateHeaderLanguage() {
   document.getElementById('headTime').textContent = isEnglish ? 'TIME' : '時刻';
   document.getElementById('headGate').textContent = isEnglish ? 'GATE' : '搭乗口';
   document.getElementById('headRemarks').textContent = isEnglish ? 'REMARKS' : '備考';
-  document.getElementById('reminderTitle').textContent = isEnglish ? 'REMINDERS' : 'リマインダー';
 }
 
 function getStatus(diffMinutes) {
-  if (diffMinutes < 0) return { ja: '出発済み', en: 'DEPARTED', code: 'departed' };
-  if (diffMinutes <= 15) return { ja: '搭乗中', en: 'BOARDING', code: 'boarding' };
-  if (diffMinutes <= 40) return { ja: '保安検査締め切り間近', en: 'CLOSE SOON', code: 'soon' };
-  if (diffMinutes <= 60) return { ja: '搭乗手続き中', en: 'CHECK-IN', code: 'checkin' };
-  return { ja: '定刻', en: 'ON TIME', code: 'ontime' };
+  if (diffMinutes < 0) return { ja: '出発済み', en: 'DEPARTED' };
+  if (diffMinutes <= 15) return { ja: '搭乗中', en: 'BOARDING' };
+  if (diffMinutes <= 40) return { ja: '保安検査締め切り間近', en: 'CLOSE SOON' };
+  if (diffMinutes <= 60) return { ja: '搭乗手続き中', en: 'CHECK-IN' };
+  return { ja: '定刻', en: 'ON TIME' };
 }
 
-function updateBoard() {
+function updateBoard(forceFlip = false) {
   const now = new Date();
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -385,18 +383,22 @@ function updateBoard() {
     const flightMinutes = h * 60 + m;
     const diff = flightMinutes - currentMinutes;
 
-    // 出発後20分以上経過した便は一覧から消去
+    // 出発後20分以上経過した便は完全削除
     if (diff < -20) continue;
 
     const status = getStatus(diff);
     activeFlights.push({ ...flight, status, diff });
   }
 
+  const currentSignature = activeFlights.slice(0, 7).map(f => f.number + f.time + f.status.en).join();
+  const contentChanged = currentSignature !== previousFlightSignatures || forceFlip;
+  previousFlightSignatures = currentSignature;
+
   const container = document.getElementById('solariRows');
   const noMsg = document.getElementById('noFlightsMessage');
   container.innerHTML = '';
 
-  const displayCount = Math.min(6, activeFlights.length);
+  const displayCount = Math.min(7, activeFlights.length);
 
   if (displayCount === 0) {
     noMsg.style.display = 'block';
@@ -416,11 +418,11 @@ function updateBoard() {
     const statusText = isEnglish ? f.status.en : f.status.ja;
 
     row.innerHTML = `
-      <div class="solari-plate col-flight">${f.number}</div>
-      <div class="solari-plate col-dest">${destText}</div>
-      <div class="solari-plate col-time">${f.time}</div>
-      <div class="solari-plate col-gate">${f.gate}</div>
-      <div class="solari-plate col-remarks">${statusText}</div>
+      <div class="solari-plate col-flight ${contentChanged ? 'flipping' : ''}">${f.number}</div>
+      <div class="solari-plate col-dest ${contentChanged ? 'flipping' : ''}">${destText}</div>
+      <div class="solari-plate col-time ${contentChanged ? 'flipping' : ''}">${f.time}</div>
+      <div class="solari-plate col-gate ${contentChanged ? 'flipping' : ''}">${f.gate}</div>
+      <div class="solari-plate col-remarks ${contentChanged ? 'flipping' : ''}">${statusText}</div>
     `;
 
     container.appendChild(row);
