@@ -330,7 +330,6 @@ MASTER_FLIGHTS.forEach(f => {
 let isEnglish = false;
 let previousFlightSignatures = "";
 
-// 8秒ごとに言語切替 (8000ミリ秒)
 setInterval(() => {
   isEnglish = !isEnglish;
   updateHeaderLanguage();
@@ -421,7 +420,11 @@ function updateBoard(forceFlip = false, isLanguageSwitch = false) {
     const row = document.createElement('div');
     row.className = `flight-row ${isJal ? 'jal' : ''} ${isDeparted ? 'departed' : ''}`;
 
-    const airlineText = isJal ? (isEnglish ? 'JAPAN AIRLINES' : '日本航空') : (isEnglish ? 'JAL' : 'JAL');
+    // 英語のときは「JAPAN\nAIRLINES」のように改行を入れて2行で綺麗に収まるようにする
+    const airlineText = isJal 
+      ? (isEnglish ? 'JAPAN<br>AIRLINES' : '日本航空') 
+      : (isEnglish ? 'JAL' : 'JAL');
+
     const destText = isEnglish ? f.destEn : f.destJa;
     const statusText = isEnglish ? f.status.en : f.status.ja;
 
