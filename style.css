@@ -68,7 +68,7 @@ body {
   opacity: 0.35;
 }
 
-/* ソラリープレート：リアルな3Dパタパタの舞台設定 */
+/* ソラリープレート設定 */
 .solari-plate {
   background-color: #1a1a1a;
   border: 1px solid #2d2d2d;
@@ -83,11 +83,11 @@ body {
   overflow: hidden;
   box-shadow: inset 0 1px 2px rgba(255,255,255,0.05), inset 0 -2px 3px rgba(0,0,0,0.6);
   letter-spacing: 0.5px;
-  perspective: 600px; /* 立体感を出すための視点深度 */
+  perspective: 600px;
   transform-style: preserve-3d;
 }
 
-/* プレート中央の割れ目（物理的な溝の影） */
+/* プレート中央の割れ目 */
 .solari-plate::after {
   content: "";
   position: absolute;
@@ -100,7 +100,6 @@ body {
   z-index: 2;
 }
 
-/* 本物のパタパタがめくれるようなリッチな3D回転アニメーション */
 @keyframes realSolariFlip {
   0% {
     transform: rotateX(0deg);
@@ -109,10 +108,10 @@ body {
   }
   30% {
     transform: rotateX(-45deg);
-    filter: brightness(0.4); /* めくれて影になる瞬間暗くする */
+    filter: brightness(0.4);
   }
   50% {
-    transform: rotateX(-90deg); /* ちょうど真上を向いて見えなくなる瞬間 */
+    transform: rotateX(-90deg);
     filter: brightness(0.2);
   }
   70% {
@@ -127,11 +126,11 @@ body {
 }
 
 .solari-plate.flipping {
-  animation: realSolariFlip 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: realSolariFlip var(--flip-duration, 0.5s) cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center center;
 }
 
-/* JAL便名・航空会社のハイライトカラー */
+/* JALハイライトカラー */
 .flight-row.jal .col-flight,
 .flight-row.jal .col-airline {
   color: #f87171;
