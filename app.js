@@ -400,42 +400,48 @@ function updateBoard(forceFlip = false, isLanguageSwitch = false) {
     activeFlights.push({ ...f, diff: adjustedDiff, status });
   }
 
-  const displayLimit = 10;
   const currentSignature = activeFlights.map(f => f.number + f.time + f.status.en).join();
   const contentChanged = currentSignature !== previousFlightSignatures || forceFlip;
   previousFlightSignatures = currentSignature;
 
   const container = document.getElementById('solariRows');
   const noMsg = document.getElementById('noFlightsMessage');
-  container.innerHTML = '';
   noMsg.style.display = 'none';
 
   const flipDuration = isLanguageSwitch ? '1.2s' : '0.4s';
 
-  for (let i = 0; i < displayLimit; i++) {
-    const f = activeFlights[i];
-    const isJal = f.number.startsWith('JL') || f.number.startsWith('JAL');
-    const isDeparted = f.diff < 0;
+  // 初回生成または内容が変わった時だけDOMを再構築する（毎秒のチラつき防止）
+  if (container.children.length === 0 || contentChanged) {
+    container.innerHTML = '';
 
-    const row = document.createElement('div');
-    row.className = `flight-row ${isJal ? 'jal' : ''} ${isDeparted ? 'departed' : ''}`;
+    for (let i = 0; i < activeFlights.length; i++) {
+      const f = activeFlights[i];
+      const isJal = f.number.startsWith('JL') || f.number.startsWith('JAL');
+      const isDeparted = f.diff < 0;
 
-    const airlineText = isJal 
-      ? (isEnglish ? 'JAPAN<br>AIRLINES' : '日本航空') 
-      : (isEnglish ? 'JAL' : 'JAL');
+      const row = document.createElement('div');
+      row.className = `flight-row ${isJal ? 'jal' : ''} ${isDeparted ? 'departed' : ''}`;
 
-    const destText = isEnglish ? f.destEn : f.destJa;
-    const statusText = isEnglish ? f.status.en : f.status.ja;
+      const airlineText = isJal 
+        ? (isEnglish ? 'JAPAN<br>AIRLINES' : '日本航空') 
+        : (isEnglish ? 'JAL' : 'JAL');
 
-    row.innerHTML = `
-      <div class="solari-plate col-airline ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${airlineText}</div>
-      <div class="solari-plate col-flight ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${f.number}</div>
-      <div class="solari-plate col-dest ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${destText}</div>
-      <div class="solari-plate col-time ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${f.time}</div>
-      <div class="solari-plate col-gate ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${f.gate}</div>
-      <div class="solari-plate col-remarks ${contentChanged ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${statusText}</div>
-    `;
+      const destText = isEnglish ? f.destEn : f.destJa;
+      const statusText = isEnglish ? f.status.en : f.status.ja;
 
-    container.appendChild(row);
+      // forceFlip または言語切替時のみフリップクラスを付与
+      const shouldFlip = forceFlip || isLanguageSwitch;
+
+      row.innerHTML = `
+        <div class="solari-plate col-airline ${shouldFlip ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${airlineText}</div>
+        <div class="solari-plate col-flight ${shouldFlip ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${f.number}</div>
+        <div class="solari-plate col-dest ${shouldFlip ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${destText}</div>
+        <div class="solari-plate col-time ${shouldFlip ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${f.time}</div>
+        <div class="solari-plate col-gate ${shouldFlip ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${f.gate}</div>
+        <div class="solari-plate col-remarks ${shouldFlip ? 'flipping' : ''}" style="--flip-duration: ${flipDuration};">${statusText}</div>
+      `;
+
+      container.appendChild(row);
+    }
   }
 }
